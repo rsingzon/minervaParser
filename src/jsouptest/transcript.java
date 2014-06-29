@@ -40,6 +40,8 @@ public class transcript {
             //Check the text at the start of the row
             //If it matches one of the tokens, take the corresponding data out
             //of one of the following rows, depending on the HTML layout
+        	
+        	System.out.println(row.text());
 
             //CGPA
             if(row.text().startsWith(Token.CUM_GPA.getString())){
@@ -73,6 +75,9 @@ public class transcript {
                 double termGPA = 0.0;
                 boolean fullTime = false;
                 boolean satisfactory = false;
+                
+                //For testing purposes
+                int courses = 0;
                 
 
                 //Search rows until the end of the semester is reached
@@ -191,12 +196,14 @@ public class transcript {
                             else if(rows.get(semesterIndex+6).text().matches("[ABCDF].|[ABCDF]")){
                                 averageGrade = rows.get(semesterIndex+6).text();
                             }
+                            
                         }
                         catch(IndexOutOfBoundsException e){
                             //String not found
                         }
                         
                         System.out.println(courseCode);
+                        courses++;
                         
                         
                     }
@@ -215,8 +222,7 @@ public class transcript {
 
                             //Extract the number of credits granted
                             credits = extractCredits(courseCode);
-
-                            
+                            courses++;
                         }
 
                         //Individual transferred courses listed
@@ -226,6 +232,7 @@ public class transcript {
                                 courseCode = rows.get(semesterIndex + 2).text();
                                 courseTitle = rows.get(semesterIndex + 3).text() + " " + rows.get(semesterIndex+4).text();
                                 credits = Integer.parseInt(rows.get(semesterIndex + 5).text());
+                                courses++;
                                 
                             }
 
@@ -248,8 +255,7 @@ public class transcript {
                                         addedIndex = addedIndex + 2;
                                         first = false;
                                     }
-
-                                    
+                                    courses++;
 
                                 }
                                 catch(IndexOutOfBoundsException e2){
@@ -284,12 +290,16 @@ public class transcript {
                         break;
                     }
                 }
-                System.out.println("***********END OF SEMESTER***************");
-                System.out.println(program);
-                System.out.println(bachelor);
-                System.out.println(programYear);
-                System.out.println(termCredits);
-                System.out.println(termGPA);
+                
+                if(courses > 0){
+                	System.out.println("***********COLLECTED DATA***************");
+                	System.out.println("Program: "+program);
+                	System.out.println("Bachelor: "+bachelor);
+                	System.out.println("Year: "+programYear);
+                	System.out.println("Full time: "+fullTime);
+                	System.out.println("***********END OF SEMESTER***************");
+                }
+                
             }
             index++;
         }
